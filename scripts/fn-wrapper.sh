@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 
-export u_id=$(id -u)
-export g_id=$(id -g)
-
-action=$1
+action=$@
 
 run_ctl (){
-  docker run -it --rm -u $u_id:$g_id -w /fn -v ${PWD}:/fn suizman/fn $@
+  docker run -it --rm --net=host -w ${PWD} --privileged -v "$HOME/.docker:/root/.docker:ro" -v ${PWD}:${PWD} -v /var/run/docker.sock:/var/run/docker.sock suizman/fn $action
 }
 
 install_ctl (){
